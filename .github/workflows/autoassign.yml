@@ -12,4 +12,7 @@ jobs:
         uses: pozil/auto-assign-issue@v1
         with:
           repo-token: ${{ secrets.MY_TOKEN }}
-          assignees: pradeem, pradeem88
+          assignees:
+            - pradeem
+            - pradeem88
+              
