@@ -1,0 +1,17 @@
+name: Label Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label_issues:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Label Issues
+      uses: actions/bin/filter@v1
+      with:
+        args: label GHE-support
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
