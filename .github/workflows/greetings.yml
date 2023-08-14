@@ -10,6 +10,7 @@ jobs:
     permissions:
       issues: write
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/autocomment
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
