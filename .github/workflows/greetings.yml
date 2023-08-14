@@ -1,20 +1,15 @@
 name: Greetings
-
 on:
   issues:
-    types: [opened]
-
 jobs:
-  greeting:
+  run:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
-    - uses: actions/checkout@v3
-    - uses: ./.github/actions/autocomment
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        issuesOpened: |
-         👋 @{{ author }}, Thank you for raising an issue. We will investigate into the matter and get back to you as soon as possible.
-            Please make sure you have given us as much context as possible. 
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/autocomment
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          issuesOpened: |
+            👋 @{{ author }}, Thank you for raising an issue. We will investigate into the matter and get back to you as soon as possible.
+                 Please make sure you have given us as much context as possible. 
         
