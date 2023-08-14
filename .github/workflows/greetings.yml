@@ -10,12 +10,7 @@ jobs:
     permissions:
       issues: write
     steps:
-    - uses: actions/first-interaction@v1
-      with:
-        repo-token: ${{ secrets.MY_TOKEN }}
-        issue-message: "You issue will be assigned to GHE Support Team. We will keep you updated on this issue with comments"
-       
-    - uses: wow-actions/auto-comment@v1
+    - uses: ./.github/actions/autocomment
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         issuesOpened: |
