@@ -1,4 +1,4 @@
-name: Auto Close Issue with Comment
+name: autocomment
 
 on:
   issue_comment:
