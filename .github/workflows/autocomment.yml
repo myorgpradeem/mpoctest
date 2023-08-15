@@ -20,4 +20,4 @@ jobs:
                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
                -d @comment.md \
-               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
+               "https://github.com/myorgpradeem/mpoctest/issues/${{ github.event.issue.number }}/comments"
