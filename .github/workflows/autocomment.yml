@@ -1,23 +1,24 @@
-name: Auto Comment on Issue
+name: Auto Close Issue with Comment
 
 on:
-  issues:
+  issue_comment:
     types:
-      - opened
+      - created
 
 jobs:
-  auto-comment:
+  auto-close:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Comment on issue
+      - name: Close issue with comment
         run: |
-          echo "Thank you for opening this issue!" > comment.md
-          curl -X POST \
-               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Accept: application/vnd.github.v3+json" \
-               -d @comment.md \
-               "https://github.com/myorgpradeem/mpoctest/issues/${{ github.event.issue.number }}/comments"
+          if [[ ${{ github.event.comment.body }} == "close" ]]; then
+            echo "This issue is being closed." > comment.md
+            gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
+            gh issue close ${{ github.event.issue.number }}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
