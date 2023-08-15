@@ -6,8 +6,8 @@ async function commentOnIssue() {
   const commentBody = 'Thank you for opening this issue!';
 
   await octokit.issues.createComment({
-    owner: 'your-username',
-    repo: 'your-repo',
+    owner: 'pradeem',
+    repo: 'mpoctest',
     issue_number: issueNumber,
     body: commentBody,
   });
