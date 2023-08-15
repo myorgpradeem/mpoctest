@@ -1,4 +1,4 @@
-name: autocomment
+name: Auto Comment on Issue
 
 on:
   issues:
@@ -6,19 +6,18 @@ on:
       - opened
 
 jobs:
-  auto-close:
+  auto-comment:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Close issue with comment
+      - name: Comment on issue
         run: |
-          if [[ ${{ github.event.comment.body }} == "close" ]]; then
-            echo "This issue is being closed." > comment.md
-            gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-            gh issue close ${{ github.event.issue.number }}
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Thank you for opening this issue!" > comment.md
+          curl -X POST \
+               -H "Authorization: Bearer ${{ secrets.MY_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               -d @comment.md \
+               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
