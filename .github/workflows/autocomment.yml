@@ -1,9 +1,9 @@
 name: autocomment
 
 on:
-  issue_comment:
+  issues:
     types:
-      - created
+      - opened
 
 jobs:
   auto-close:
