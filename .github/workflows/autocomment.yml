@@ -8,22 +8,16 @@ on:
 jobs:
   auto-comment:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v3
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-          
-      - name: Install dependencies
-        run: npm install
-        
+
       - name: Comment on issue
         run: |
           echo "Thank you for opening this issue!" > comment.md
-          gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          curl -X POST \
+               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               -d @comment.md \
+               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
