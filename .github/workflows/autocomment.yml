@@ -1,4 +1,4 @@
-name: Auto-comment 
+name: Auto-comment
 
 on:
   issues:
@@ -13,14 +13,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Comment on issue
+    - name: Auto-comment on issue
       uses: actions/github-script@v5
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const issueNumber = context.payload.issue.number;
+          const repoOwner = context.repo.owner;
+          const repoName = context.repo.repo;
+          const commentBody = 'Thank you for opening this issue!';
+
           github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Thanks for opening this issue!'
-          })
+            issue_number: issueNumber,
+            owner: repoOwner,
+            repo: repoName,
+            body: commentBody
+          });
