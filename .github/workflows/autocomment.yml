@@ -13,19 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Auto-comment on issue
-      uses: actions/github-script@v5
+    - name: Auto-comment on new issue
+      uses: peter-evans/create-issue-comment@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const issueNumber = context.payload.issue.number;
-          const repoOwner = context.repo.owner;
-          const repoName = context.repo.repo;
-          const commentBody = 'Thank you for opening this issue!';
-
-          github.issues.createComment({
-            issue_number: issueNumber,
-            owner: repoOwner,
-            repo: repoName,
-            body: commentBody
-          });
+        issue-number: ${{ github.event.issue.number }}
+        body: |
+          Thank you for opening this issue! We'll look into it.
