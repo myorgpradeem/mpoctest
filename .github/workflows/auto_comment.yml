@@ -1,12 +1,10 @@
-name: Auto Comment issues
+name: Auto Comment wow
 on: [issues]
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-#      - uses: wow-actions/auto-comment@v1
-      - uses: actions/checkout@v2
-      - uses: ./auto-comment-master
+      - uses: wow-actions/auto-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           issuesOpened: |
