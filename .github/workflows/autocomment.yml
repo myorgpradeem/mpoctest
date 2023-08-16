@@ -1,20 +1,29 @@
-name: PR Title Validation
+name: Auto-commen
 
 on:
   issues:
-    opened:
+    types:
+      - opened
 
 jobs:
-  comment:
+  auto-comment:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/github-script@v5
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Auto-comment on issue
+        uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
+            const comment = "Thank you for opening this issue!";
+            const issue_number = context.payload.issue.number;
+            github.issues.createComment({
+              issue_number: issue_number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Please change PR Title!!'
-            })
+              body: comment
+            });
+
