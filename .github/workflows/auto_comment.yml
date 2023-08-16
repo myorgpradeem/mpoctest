@@ -1,4 +1,4 @@
-name: Auto Comment
+name: Auto Comment issues
 on: [issues]
 jobs:
   run:
@@ -6,7 +6,7 @@ jobs:
     steps:
 #      - uses: wow-actions/auto-comment@v1
       - uses: actions/checkout@v2
-      - uses: ./tree/main/.github/workflows/auto-comment-master
+      - uses: ./auto-comment-master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           issuesOpened: |
