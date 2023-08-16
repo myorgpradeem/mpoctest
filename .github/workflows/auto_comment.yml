@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 #      - uses: wow-actions/auto-comment@v1
+      - uses: actions/checkout@v2
       - uses: ./tree/main/.github/workflows/auto-comment-master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
