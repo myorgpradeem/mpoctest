@@ -17,7 +17,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            if (context.payload.label.name === 'GHE-support') {
+            if (context.payload.label.name === 'auto-close') {
               github.issues.update({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
