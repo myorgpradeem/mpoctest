@@ -11,14 +11,20 @@ jobs:
       issues: write
     steps:
     - uses: actions/checkout@v3
-    - name: Comment on new issue
+    - name: Comment on issue
       run: |
           echo "Thank you for opening this issue!" > comment.md
-          curl -X POST \
-               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Accept: application/vnd.github.v3+json" \
-               -d @comment.md \
-               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
+          gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Comment on new issue
+#      run: |
+#          echo "Thank you for opening this issue!" > comment.md
+#          curl -X POST \
+#               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+#               -H "Accept: application/vnd.github.v3+json" \
+#               -d @comment.md \
+#               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
 #    - uses: ./auto_comment_issues
 #      with:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
