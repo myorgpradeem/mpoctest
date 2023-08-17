@@ -17,25 +17,7 @@ jobs:
           We will investigate into the matter and get back to you as soon as possible.
           Please make sure you have given us as much context as possible." > comment.md
           gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-            action:
-            - delay:
-                seconds: 10
+          timeout: 10s
           gh issue close ${{ github.event.issue.number }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#    - name: Comment on new issue
-#      run: |
-#          echo "Thank you for opening this issue!" > comment.md
-#          curl -X POST \
-#               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-#               -H "Accept: application/vnd.github.v3+json" \
-#               -d @comment.md \
-#               "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
-#    - uses: ./auto_comment_issues
-#      with:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        issuesOpenedReactions: 'hooray, +1'
-#        issuesOpenedComment: |
-#          👋 @{{ author }}
-#           Thank you for raising an issue. We will investigate into the matter and get back to you as soon as possible.
-#           Please make sure you have given us as much context as possible.    
