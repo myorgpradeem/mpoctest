@@ -3,7 +3,7 @@ name: Auto-Close Issues with Comment
 on:
   issues:
     types:
-      - opened  # This event triggers when an issue is labeled
+      - labeled  # This event triggers when an issue is labeled
 
 jobs:
   auto-close-with-comment:
@@ -15,21 +15,21 @@ jobs:
       - name: Auto-close and comment on labeled issue
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { issues } = require('@actions/github');
             const issueNumber = context.issue.number;
-            const issueComment = `
-            This issue is being closed automatically as requested. If you have further questions, feel free to ask!
-            `;
+            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+            const issueComment = `This issue is being closed automatically as requested. If you have further questions, feel free to ask!`;
             
-            github.issues.createComment({
+            await octokit.issues.createComment({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: issueComment
             });
             
-            github.issues.update({
+            await octokit.issues.update({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
