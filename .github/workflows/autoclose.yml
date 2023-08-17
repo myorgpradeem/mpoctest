@@ -1,9 +1,9 @@
 name: Auto-Close Issues with Comment
 
 on:
-  issues:
+  issue_comment:
     types:
-      - labeled  # This event triggers when an issue is labeled
+      - created  # This event triggers when a comment is created on an issue
 
 jobs:
   auto-close-with-comment:
@@ -12,13 +12,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Auto-close and comment on labeled issue
+      - name: Auto-close and comment on issue
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueNumber = context.issue.number;
-            const issueComment = `This issue is being closed automatically as requested. If you have further questions, feel free to ask!`;
+            const issueNumber = context.payload.issue.number;
+            const issueComment = `
+            This issue is being closed automatically as requested. If you have further questions, feel free to ask!
+            `;
 
             github.issues.createComment({
               issue_number: issueNumber,
@@ -33,3 +35,4 @@ jobs:
               repo: context.repo.repo,
               state: 'closed'
             });
+
