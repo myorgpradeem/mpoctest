@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Comment on issue
       run: |
-          echo "Thank you for opening this issue!" > comment.md
+          echo "Thanks for fixing this" > comment.md
           gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
