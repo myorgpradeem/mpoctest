@@ -15,21 +15,19 @@ jobs:
       - name: Auto-close and comment on labeled issue
         uses: actions/github-script@v5
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { issues } = require('@actions/github');
             const issueNumber = context.issue.number;
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-
             const issueComment = `This issue is being closed automatically as requested. If you have further questions, feel free to ask!`;
             
-            await octokit.issues.createComment({
+            github.issues.createComment({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: issueComment
             });
             
-            await octokit.issues.update({
+            github.issues.update({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
