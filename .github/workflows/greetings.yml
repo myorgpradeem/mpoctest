@@ -17,7 +17,6 @@ jobs:
           We will investigate into the matter and get back to you as soon as possible.
           Please make sure you have given us as much context as possible." > comment.md
           gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-          timeout: 10s
           gh issue close ${{ github.event.issue.number }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
