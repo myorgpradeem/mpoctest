@@ -1,0 +1,32 @@
+name: Auto-Close Issues
+
+on:
+  issues:
+    types:
+      - labeled  # This event triggers when an issue is labeled
+
+jobs:
+  auto-close:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Auto-close labeled issue
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            if (context.payload.label.name === 'GHE-support') {
+              github.issues.update({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'closed'
+              });
+            }
+
+
+
+
+
