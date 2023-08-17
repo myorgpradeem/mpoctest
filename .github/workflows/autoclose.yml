@@ -17,18 +17,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueNumber = context.issue.number;
-
+            const issueNumber = context.payload.issue.number;
             const issueComment = `This issue is being closed automatically as requested. If you have further questions, feel free to ask!`;
 
-            github.issues.createComment({
+            const octokit = context.github;
+
+            await octokit.issues.createComment({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: issueComment
             });
 
-            github.issues.update({
+            await octokit.issues.update({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
