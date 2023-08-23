@@ -10,7 +10,7 @@ jobs:
 #    permissions:
 #      issues: write
     steps:
-#    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - name: Comment on issue
       run: |
          echo "This is working." > comment.md
