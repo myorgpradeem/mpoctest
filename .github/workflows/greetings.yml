@@ -8,7 +8,7 @@ jobs:
   greeting:
     runs-on: ubuntu-latest
     permissions:
-      issues: maintain
+      issues: admin
     steps:
     - uses: actions/checkout@v3
     - name: Comment on issue
