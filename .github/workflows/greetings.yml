@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Comment on issue
       run: |
-         echo "Author: @{{ author }}" > comment.md
+         echo "This is working." > comment.md
          gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
 #          echo "$author Thank you for raising an issue @{{ author }}. 
 #          We will investigate into the matter and get back to you as soon as possible.
