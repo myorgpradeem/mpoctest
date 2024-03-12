@@ -17,8 +17,8 @@ jobs:
         env:
           APP_ID: 853518
           INSTALLATION_ID: 48299343
-          PRIVATE_KEY_FILE: "${{ secrets.PRIVATE_KEY }}"
-          REPO_NAME: "api"
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          REPOSITORY_NAME: 'api'
         run: |
-          TOKEN=$(curl -s -X POST -H "Authorization: Bearer $(openssl dgst -sha256 -sign $PRIVATE_KEY_FILE <(printf '%s' $(date +%s)) | openssl enc -base64)" -H "Accept: application/vnd.github.v3+json"   https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens | jq -r .token)
-          curl -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $TOKEN" https://api.github.com/installation/repositories -d "{\"repository_ids\":[$(curl -s -H "Authorization: token $TOKEN" https://api.github.com/repos/$REPO_NAME | jq .id)]}"
+          ACCESS_TOKEN=$(curl -X POST -H "Authorization: Bearer $(jwt)" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/app/installations/${INSTALLATION_ID}/access_tokens" | jq -r '.token')
+          curl -X PUT -H "Authorization: token $ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/installation/repositories/${REPOSITORY_NAME}"
