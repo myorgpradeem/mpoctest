@@ -13,6 +13,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Install jsonwebtoken-cli
+        run: npm install -g jsonwebtoken-cli
+
       - name: Add Repository to GitHub App
         env:
           APP_ID: 853518
