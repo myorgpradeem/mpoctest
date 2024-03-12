@@ -1,1 +1,1 @@
-# mpoctest
+curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/user/installations/48299343/repositories/767945234
