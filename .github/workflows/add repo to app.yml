@@ -8,20 +8,8 @@ on:
 jobs:
   add-repo:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Install jsonwebtoken-cli
-        run: npm install -g jsonwebtoken-cli
-
-      - name: Add Repository to GitHub App
-        env:
-          APP_ID: 853518
-          INSTALLATION_ID: 48299343
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          REPOSITORY_NAME: 'api'
-        run: |
-          ACCESS_TOKEN=$(curl -X POST -H "Authorization: Bearer $(jwt)" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/app/installations/${INSTALLATION_ID}/access_tokens" | jq -r '.token')
-          curl -X PUT -H "Authorization: token $ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/installation/repositories/${REPOSITORY_NAME}"
+    - uses: actions/checkout@v2
+    - name: add repo to app
+      run: |
+           curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/user/installations/48299343/repositories/767945234
