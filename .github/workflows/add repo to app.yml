@@ -12,4 +12,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: add repo to app
       run: |
-           curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/user/installations/48299343/repositories/767945234
+           curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/user/installations/48299343/repositories/767945234
