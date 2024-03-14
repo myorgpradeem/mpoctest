@@ -13,7 +13,7 @@ jobs:
       id: extract
       uses: actions/github-script@v5
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.API_TOKEN }}
         script: |
           const issueBody = context.payload.issue.body;
           const match = issueBody.match(/Variable: (.*)/);
@@ -22,4 +22,4 @@ jobs:
           return { variable: extractedVariable };
 
     - name: Use Extracted Variable
-      run: echo "Variable from Issue: ${{ steps.extract.outputs.variable }}"
+      run: echo "Variable from Issue:${{ steps.extract.outputs.variable }}"
