@@ -16,10 +16,16 @@ jobs:
         github-token: ${{ secrets.API_TOKEN }}
         script: |
           const issueBody = context.payload.issue.body;
-          const match = issueBody.match(/Variable: (.*)/);
-          const extractedVariable = match ? match[1].trim() : null;
-          console.log('Extracted Variable:', extractedVariable);
-          return { variable: extractedVariable };
+          if (issueBody) {
+            const match = issueBody.match(/Variable: (.*)/);
+            const extractedVariable = match ? match[1].trim() : null;
+            console.log('Extracted Variable:', extractedVariable);
+            return { variable: extractedVariable };
+          } else {
+            console.log('Issue body is null.');
+            return { variable: null };
+          }
+          
 
     - name: Use Extracted Variable
       run: echo "Variable from Issue:${{ steps.extract.outputs.variable }}"
