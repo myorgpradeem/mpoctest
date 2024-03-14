@@ -28,4 +28,5 @@ jobs:
           
 
     - name: Use Extracted Variable
-      run: echo "Variable from Issue:${{ steps.extract.outputs.variable }}"
+      run |
+        echo "Variable from Issue: ${{ steps.extract.outputs.variable }}"
