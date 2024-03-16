@@ -17,9 +17,9 @@ jobs:
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
-          export VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Export the variable using cut
+          VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
           echo "Extracted Variable: $VAR_NAME"
-          echo "::set-env name=VAR_NAME::$VAR_NAME"  # Set the environment variable for subsequent steps
+          echo "VAR_NAME=$VAR_NAME" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
       - name: Use Variables
         run: |
