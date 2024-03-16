@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
-          VAR_NAME=$(grep -oP 'VAR_NAME=\K[^ ]+' comment.txt)
+          VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
           echo "Extracted Variable: $VAR_NAME"
 
       - name: Use Variables
