@@ -19,6 +19,7 @@ jobs:
           cat comment.txt  # Check the content of comment.txt
           export VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Export the variable using cut
           echo "Extracted Variable: $VAR_NAME"
+          echo "::set-env name=VAR_NAME::$VAR_NAME"  # Set the environment variable for subsequent steps
 
       - name: Use Variables
         run: |
