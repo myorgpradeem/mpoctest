@@ -1,0 +1,15 @@
+name: Cancel Member Invitations
+
+on:
+  workflow_dispatch:  # This workflow can be triggered manually
+
+jobs:
+  cancel_invitations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger script
+        run: |
+          # Replace 'YOUR_SCRIPT_URL' with the URL of your script
+          curl -X POST https://github.com/myorgpradeem/mpoctest/blob/main/CancelTeamInvite.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
