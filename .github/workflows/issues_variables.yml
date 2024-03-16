@@ -1,8 +1,8 @@
-name: Issue Data Workflow
+name: Issue Comment Variables
 
 on:
-  issues:
-    types: [opened, edited]
+  issue_comment:
+    types: [created]
 
 jobs:
   process-comment:
@@ -12,8 +12,6 @@ jobs:
         id: extract
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
-          # Parse comment.txt to extract variables and set them as environment variables
-          # Example:
           export VAR_NAME=$(grep -oP 'VAR_NAME=\K[^ ]+' comment.txt)
 
       - name: Use Variables
