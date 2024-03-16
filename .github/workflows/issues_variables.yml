@@ -5,37 +5,17 @@ on:
     types: [opened, edited]
 
 jobs:
-  process_issue:
+  process-comment:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Extract Variables
-      id: extract
-      uses: actions/github-script@v5
-      with:
-        github-token: ${{ secrets.API_TOKEN }}
-        script: |
-          const issueBody = context.payload.issue.body;
-          if (issueBody) {
-             const match = issueBody.match(/Variable: (.*)/);
-             const extractedVariable = match ? match[1].trim() : null;
-             console.log('Issue Body:', issueBody);
-             console.log('Extracted Variable:', extractedVariable);
-             if (extractedVariable) {
-                console.log('Setting variable output.');
-                return { variable: extractedVariable };
-             } else {
-             console.log('No variable found.');
-             return { variable: null };
-             }
-          } else {
-            console.log('Issue body is null.');
-            return { variable: null };
-          }
-     
-    - name: Use Extracted Variable
-#      run: |
-#        echo "Variable from Issue: "
-#        echo "${{ steps.extract.outputs.variable }}"
-      run: |
-        echo "Variable from Issue: ${{ steps.extract.outputs.variable }}"
+      - name: Extract Variables
+        id: extract
+        run: |
+          echo "${{ github.event.comment.body }}" > comment.txt
+          # Parse comment.txt to extract variables and set them as environment variables
+          # Example:
+          # export VAR_NAME=$(grep -oP 'VAR_NAME=\K[^ ]+' comment.txt)
+
+      - name: Use Variables
+        run: |
+          echo "Extracted Variable: $VAR_NAME"
