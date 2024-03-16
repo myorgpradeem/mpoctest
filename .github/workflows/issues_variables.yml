@@ -14,7 +14,7 @@ jobs:
           echo "${{ github.event.comment.body }}" > comment.txt
           # Parse comment.txt to extract variables and set them as environment variables
           # Example:
-          # export VAR_NAME=$(grep -oP 'VAR_NAME=\K[^ ]+' comment.txt)
+          export VAR_NAME=$(grep -oP 'VAR_NAME=\K[^ ]+' comment.txt)
 
       - name: Use Variables
         run: |
