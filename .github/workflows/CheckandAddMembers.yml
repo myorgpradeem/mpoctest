@@ -19,7 +19,7 @@ jobs:
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
           GITHUB_ID=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
-          echo "Extracted Variable: $GITHUB_ID"
+          echo "Extracted GITHUB_ID: $GITHUB_ID"
           echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
       - name: Check Membership
