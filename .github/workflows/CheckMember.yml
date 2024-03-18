@@ -25,7 +25,7 @@ jobs:
         membership=$(curl -s -H "Authorization: token ${{ secrets.API_TOKEN }}" \
                       -H "Accept: application/vnd.github.v3+json" \
                       "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
-        is_private=$(echo "$membership" | grep -Po '"type":.*?[^\\]",' | sed 's/"type"://' | awk '{print $1}')
+        is_private=$(echo "$membership" | grep -o '"type": *"[^"]*"' | grep -o '"[^"]*"$')
         if [ "$is_private" == "\"User\"" ]; then
           echo "$USERNAME is a private member of $ORG_NAME."
         else
