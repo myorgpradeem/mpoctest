@@ -21,7 +21,7 @@ jobs:
         VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
         echo "Extracted Variable: $VAR_NAME"
         echo "VAR_NAME=$VAR_NAME" >> $GITHUB_ENV  # Set the environment variable using Environment Files
-		
+
     - name: Check Membership
       run: |
         # Set organization name, username, and token
@@ -31,7 +31,7 @@ jobs:
           
         # Make request to GitHub API
         response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/orgs/$ORG_NAME/memberships/$USERNAME")
-					  
+			  
     - name: Check Response Status
       run: |
         if [ $response -eq 200 ]; then
