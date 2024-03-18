@@ -26,10 +26,8 @@ jobs:
                       -H "Accept: application/vnd.github.v3+json" \
                       "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
         is_private=$(echo "$membership" | grep -o '"type": *"[^"]*"' | grep -o '"[^"]*"$')
-        if [ "$is_private" == "\"User\"" ]; then
+        if [ -n "$is_private" ] && [ "$is_private" == "\"User\"" ]; then
           echo "$USERNAME is a private member of $ORG_NAME."
         else
           echo "$USERNAME is not a private member of $ORG_NAME."
         fi
-      env:
-        ORG_NAME: myorgpradeem
