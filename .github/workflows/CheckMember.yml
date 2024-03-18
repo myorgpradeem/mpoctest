@@ -18,12 +18,13 @@ jobs:
       id: get_members
       run: |
         ORG_NAME="myorgpradeem"
-        members=$(curl -s -H "Authorization: token ${{ secrets.API_TOKEN }}" \
+        members=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                    -H "Accept: application/vnd.github.v3+json" \
                    "https://api.github.com/orgs/$ORG_NAME/members")
         is_private=$(echo "$members" | grep -c '"type": *"User"')
-        if [ "$is_private" -gt 0 ]; then
-          echo "The organization $ORG_NAME has private members."
-        else
+        if [ "$is_private" -eq 0 ]; then
           echo "The organization $ORG_NAME does not have private members."
+        else
+          echo "The organization $ORG_NAME has private members."
         fi
+        
