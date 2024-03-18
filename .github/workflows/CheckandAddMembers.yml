@@ -22,7 +22,7 @@ jobs:
           echo "Extracted GITHUB_ID: $GITHUB_ID"
           echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
-      - name: Add Memeber to team(org-members) only if GitHub id is memeber of lbg-gcp-foundation.
+      - name: Add Member to org-members team.
         run: |
           # Set organization name, username, and token
           ORG_NAME="myorgpradeem"
