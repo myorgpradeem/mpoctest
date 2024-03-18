@@ -24,7 +24,7 @@ jobs:
           # Make request to GitHub API
           response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN" \
                       -H "Accept: application/vnd.github.v3+json" \
-                      "https://api.github.com/orgs/$ORG_NAME/members")
+                      "https://api.github.com/orgs/$ORG_NAME/memberships/$USERNAME")
           
           # Check response status
           if [ $response -eq 200 ]; then
