@@ -29,8 +29,10 @@ jobs:
           # Check response status
           if [ $response -eq 200 ]; then
               echo "$USERNAME is a member of $ORG_NAME."
-          elif [ $response -eq 404 ]; then
+          elif [ $response -eq 204 ]; then
               echo "$USERNAME is not a member of $ORG_NAME."
+          elif [ $response -eq 404 ]; then
+              echo "Error: $USERNAME or $ORG_NAME not found."
           else
               echo "Error: HTTP status code $response"
           fi
