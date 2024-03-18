@@ -1,4 +1,4 @@
-name: Check Org Private Member
+name: Check Org Private Members
 
 on:
   workflow_dispatch:
@@ -10,30 +10,26 @@ on:
 jobs:
   check_membership:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Check Org Private Member
-        env:
-          ORG_NAME: myorgpradeem
-          USERNAME: ${{ github.event.inputs.username }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          APP_ID: 853518
-          INSTALLATION_ID: 48299343
-        run: |
-          JWT=$(echo -n "{ \"iss\": $APP_ID }" | openssl dgst -sha256 -sign <(echo "$PRIVATE_KEY") -binary | openssl enc -base64 -A)
-          INSTALLATION_TOKEN=$(curl -s -X POST -H "Authorization: Bearer $JWT" -H "Accept: application/vnd.github.v3+json" \
-                               "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" \
-                               | jq -r .token)
-          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $INSTALLATION_TOKEN" \
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git credentials
+      run: echo "machine github.com login ${{ secrets.API_TOKEN }}" > ~/.netrc
+
+    - name: Check Membership
+      run: |
+        ORG_NAME="myorgpradeem"
+        USERNAME="${{ github.event.inputs.username }}"
+        membership=$(curl -s -H "Authorization: token ${{ secrets.API_TOKEN }}" \
                       -H "Accept: application/vnd.github.v3+json" \
                       "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
-          if [ $response -eq 200 ]; then
-              echo "$USERNAME is a private member of $ORG_NAME."
-          elif [ $response -eq 404 ]; then
-              echo "$USERNAME is not a private member of $ORG_NAME."
-          else
-              echo "Error: HTTP status code $response"
-          fi
-        shell: bash
+        is_private=$(echo "$membership" | grep -Po '"type":.*?[^\\]",' | sed 's/"type"://' | awk '{print $1}')
+        if [ "$is_private" == "\"User\"" ]; then
+          echo "$USERNAME is a private member of $ORG_NAME."
+        else
+          echo "$USERNAME is not a private member of $ORG_NAME."
+        fi
+      env:
+        ORG_NAME: myorgpradeem
