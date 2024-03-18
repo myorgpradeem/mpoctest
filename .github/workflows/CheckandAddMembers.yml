@@ -1,4 +1,4 @@
-name: Check and add Members
+name: Add Memeber to org-members
 
 on:
   issue_comment:
@@ -9,24 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Debug Comment Content
+      - name: GitHub_ID provided in comment 
         run: |
-          echo "Comment Content: ${{ github.event.comment.body }}"
+          echo "Provided GitHub_ID is: ${{ github.event.comment.body }}"
 
       - name: Extract Variables
         id: extract
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
-          VAR_NAME=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
-          echo "Extracted Variable: $VAR_NAME"
-          echo "VAR_NAME=$VAR_NAME" >> $GITHUB_ENV  # Set the environment variable using Environment Files
+          GITHUB_ID=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
+          echo "Extracted Variable: $GITHUB_ID"
+          echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
       - name: Check Membership
         run: |
           # Set organization name, username, and token
           ORG_NAME="myorgpradeem"
-          USERNAME="$VAR_NAME"
+          USERNAME="$GITHUB_ID"
           TOKEN="${{ secrets.API_TOKEN }}"
           
           # Make request to GitHub API
