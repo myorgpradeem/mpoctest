@@ -2,15 +2,11 @@ name: Check Org Private Members
 
 on:
   workflow_dispatch:
-    inputs:
-      username:
-        description: 'Username to check membership for'
-        required: true
 
 jobs:
   check_membership:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -18,16 +14,16 @@ jobs:
     - name: Set up Git credentials
       run: echo "machine github.com login ${{ secrets.API_TOKEN }}" > ~/.netrc
 
-    - name: Check Membership
+    - name: Get Org Members
+      id: get_members
       run: |
         ORG_NAME="myorgpradeem"
-        USERNAME="${{ github.event.inputs.username }}"
-        membership=$(curl -s -H "Authorization: token ${{ secrets.API_TOKEN }}" \
-                      -H "Accept: application/vnd.github.v3+json" \
-                      "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
-        is_private=$(echo "$membership" | grep -o '"type": *"[^"]*"' | grep -o '"[^"]*"$')
-        if [ -n "$is_private" ] && [ "$is_private" == "\"User\"" ]; then
-          echo "$USERNAME is a private member of $ORG_NAME."
+        members=$(curl -s -H "Authorization: token ${{ secrets.API_TOKEN }}" \
+                   -H "Accept: application/vnd.github.v3+json" \
+                   "https://api.github.com/orgs/$ORG_NAME/members")
+        is_private=$(echo "$members" | grep -o '"type": *"[^"]*"' | grep -o '"[^"]*"$' | awk '{s+=$1} END {print s}')
+        if [ "$is_private" -gt 0 ]; then
+          echo "The organization $ORG_NAME has private members."
         else
-          echo "$USERNAME is not a private member of $ORG_NAME."
+          echo "The organization $ORG_NAME does not have private members."
         fi
