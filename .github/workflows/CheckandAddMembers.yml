@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "Provided GitHub_ID is: ${{ github.event.comment.body }}"
 
-      - name: Extract Variables
+      - name: Extract GITHUB_ID
         id: extract
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
@@ -22,7 +22,7 @@ jobs:
           echo "Extracted GITHUB_ID: $GITHUB_ID"
           echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
-      - name: Check Membership
+      - name: Add Memeber to team(org-members) only if GitHub id is memeber of lbg-gcp-foundation.
         run: |
           # Set organization name, username, and token
           ORG_NAME="myorgpradeem"
