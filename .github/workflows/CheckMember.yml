@@ -16,25 +16,29 @@ jobs:
       
       - name: Check Membership
         run: |
-          # Set organization name, username, and token
+          # Set organization name, username, and private key
           ORG_NAME="myorgpradeem"
           USERNAME="${{ github.event.inputs.username }}"
-          TOKEN="${{  secrets.API_TOKEN }}"
+          PRIVATE_KEY="${{ secrets.PRIVATE_KEY }}"
+          APP_ID="853518"
+          INSTALLATION_ID="48299343"
           
-          # Make request to GitHub API
-          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN" \
-                      -H "Accept: application/vnd.github.v3+json" \
-                      "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
+          # Generate JWT token
+          JWT=$(echo -n "{ \"iss\": $APP_ID }" | openssl dgst -sha256 -sign <(echo "$PRIVATE_KEY") -binary | openssl enc -base64 -A)
+          
+          # Get installation token
+          INSTALLATION_TOKEN=$(curl -s -X POST -H "Authorization: Bearer $JWT" -H "Accept: application/vnd.github.v3+json"                               "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" | jq -r .token)
+          
+          # Make request to GitHub API using installation token
+          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $INSTALLATION_TOKEN" -H "Accept: application/vnd.github.v3+json"                       "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
           
           # Check response status
           if [ $response -eq 200 ]; then
               echo "$USERNAME is a member of $ORG_NAME."
-          elif [ $response -eq 204 ]; then
-              echo "$USERNAME is not a member of $ORG_NAME."
           elif [ $response -eq 404 ]; then
-              echo "Error: $USERNAME or $ORG_NAME not found."
+              echo "$USERNAME is not a member of $ORG_NAME."
           else
               echo "Error: HTTP status code $response"
           fi
         env:
-          GITHUB_TOKEN: ${{  secrets.API_TOKEN }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
