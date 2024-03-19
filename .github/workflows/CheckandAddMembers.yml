@@ -11,13 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: GitHub_ID provided in comment 
-        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           echo "Provided GitHub_ID is: ${{ github.event.comment.body }}"
 
       - name: Extract GITHUB_ID
         id: extract
-        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
@@ -26,7 +24,6 @@ jobs:
           echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
       - name: Add Member to org-members team.
-        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           # Set organization name, username, and token
           ORG_NAME="myorgpradeem"
