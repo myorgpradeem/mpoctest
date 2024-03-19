@@ -16,6 +16,7 @@ jobs:
 
       - name: Extract GITHUB_ID
         id: extract
+        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           echo "${{ github.event.comment.body }}" > comment.txt
           cat comment.txt  # Check the content of comment.txt
