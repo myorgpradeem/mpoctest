@@ -24,6 +24,7 @@ jobs:
           echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
 
       - name: Add Member to org-members team.
+        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           # Set organization name, username, and token
           ORG_NAME="myorgpradeem"
