@@ -16,6 +16,7 @@ jobs:
           issue_body="${{ github.event.issue.body }}"
           GITHUB_ID=$(echo "$issue_body" | grep -oP 'GITHUB_ID:\s*\K\S+')
           echo "Extracted variable: $GITHUB_ID"
+          echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV
 
       - name: Add Member to org-members team.
         run: |
