@@ -1,28 +1,21 @@
 name: Add Member to org-members
 
 on:
-  issue_comment:
-    types: [created]
+  issues:
+    types: [opened]
 
 jobs:
-  process-comment:
+  extract-variables:
     runs-on: ubuntu-latest
-    if: github.event.issue.number == 157  # Replace 157 with the issue number
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: GitHub_ID provided in comment 
-        run: |
-          echo "Provided GitHub_ID is: ${{ github.event.comment.body }}"
-
       - name: Extract GITHUB_ID
-        id: extract
         run: |
-          echo "${{ github.event.comment.body }}" > comment.txt
-          cat comment.txt  # Check the content of comment.txt
-          GITHUB_ID=$(cat comment.txt | cut -d' ' -f2)  # Extract the variable using cut
-          echo "Extracted GITHUB_ID: $GITHUB_ID"
-          echo "GITHUB_ID=$GITHUB_ID" >> $GITHUB_ENV  # Set the environment variable using Environment Files
+          issue_body="${{ github.event.issue.body }}"
+          GITHUB_ID=$(echo "$issue_body" | grep -oP 'GITHUB_ID:\s*\K\S+')
+          echo "Extracted variable: $GITHUB_ID"
 
       - name: Add Member to org-members team.
         run: |
