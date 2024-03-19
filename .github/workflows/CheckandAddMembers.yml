@@ -37,11 +37,11 @@ jobs:
 
           # Check Response Status
           if [ $response -eq 204 ]; then
-            echo "$USERNAME is already a member of $ORG_NAME." > comment.md
-            gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-          elif [ $response -eq 404 ]; then
             echo "$USERNAME is not found in $ORG_NAME. Adding $USERNAME to $MY_TEAM." > comment.md
             gh team add --team $MY_TEAM --member $USERNAME
+            gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
+          elif [ $response -eq 404 ]; then
+            echo "$USERNAME is not member of $ORG_NAME." > comment.md
             gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
           else
             echo "Error: HTTP status code $response"
