@@ -32,18 +32,19 @@ jobs:
           USERNAME="$GITHUB_ID"
           TOKEN="${{ secrets.API_TOKEN }}"
           
-          # Attempt to add the user to the team
-          response=$(gh team add --team $MY_TEAM --member $USERNAME 2>&1)
+          # Make request to GitHub API
+          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/orgs/$ORG_NAME/members/$USERNAME")
 
           # Check Response Status
-          if [ $? -eq 0 ]; then
-            echo "$USERNAME is not a member of $ORG_NAME. Adding $USERNAME to $MY_TEAM." > comment.md
+          if [ $response -eq 204 ]; then
+            curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/orgs/$ORG_NAME/teams/$MY_TEAM/memberships/$USERNAME"
+            echo "$USERNAME is added as member of $ORG_NAME." > comment.md
             gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
-          elif [[ $response == *"HTTP 404"* ]]; then
-            echo "$USERNAME is not a member of $ORG_NAME." > comment.md
+          elif [ $response -eq 404 ]; then
+            echo "$USERNAME is not found in $ORG_NAME. Adding $USERNAME to $MY_TEAM." > comment.md
             gh issue comment ${{ github.event.issue.number }} --body-file=comment.md
           else
-            echo "Error: $response"
+            echo "Error: HTTP status code $response"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
