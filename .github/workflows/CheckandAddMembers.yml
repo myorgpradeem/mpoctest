@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: GitHub_ID provided in comment 
+        if: github.event.issue.number == 157  # Replace 157 with the issue number
         run: |
           echo "Provided GitHub_ID is: ${{ github.event.comment.body }}"
 
