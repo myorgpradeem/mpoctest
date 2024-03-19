@@ -1,0 +1,22 @@
+name: Extract Variables from Issue Body
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  extract-variables:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract variables from issue body
+        run: |
+          # Extract the issue body from the event payload
+          issue_body="${{ github.event.issue.body }}"
+          
+          # Extract variables using regular expressions
+          # Example: Extracting a variable named "variable_name"
+          variable_name=$(echo "$issue_body" | grep -oP 'variable_name:\s*\K\S+')
+
+          # Print the extracted variables
+          echo "Extracted variable: $variable_name"
