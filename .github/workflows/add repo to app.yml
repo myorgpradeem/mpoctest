@@ -15,13 +15,27 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        # Set variables
-        INSTALLATION_ID="48299343"
-        REPO_NAME="767945234"
-        API_URL="https://api.github.com"
+        APP_ID=853518
+        INSTALLATION_ID=48299343
+        REPOS=api # List of repositories to add
 
-        # Add repository to app installation
-        curl -X PUT \
-          -H "Authorization: Bearer $GITHUB_TOKEN" \
-          -H "Accept: application/vnd.github.machine-man-preview+json" \
-          "$API_URL/app/installations/$INSTALLATION_ID/repositories/$REPO_NAME"
+        # Function to get a JWT token for GitHub App authentication
+        get_jwt() {
+          jwt=$(curl -s --request POST \
+            --url "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github.v3+json" \
+            --data "{}" | jq -r '.token')
+          echo $jwt
+        }
+
+        JWT_TOKEN=$(get_jwt)
+
+        for REPO in "${REPOS[@]}"; do
+          curl -X PATCH \
+            -H "Authorization: Bearer $JWT_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            --url "https://api.github.com/app/installations/$INSTALLATION_ID/repositories/$REPO" \
+            --data '{"permissions": {"contents": "read"}}'
+          echo "Added $REPO to GitHub App."
+        done
