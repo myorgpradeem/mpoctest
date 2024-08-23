@@ -1,17 +1,28 @@
-name: Add Repository to GitHub App
+name: Add Repository to App
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
 
 jobs:
-  add-repo:
+  add-to-app:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: add repo to app
-      run: |
-           curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.API_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/user/installations/48299343/repositories/api
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Add repository to app
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Set variables
+        APP_ID="48299343"
+        REPO_NAME="api"
+        API_URL="https://api.github.com"
+
+        # Add repository to app (replace this with the actual API request or script you need)
+        curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "$API_URL/apps/$APP_ID/add_repositories" \
+          -d "{\"repository_ids\": [\"$REPO_NAME\"]}"
