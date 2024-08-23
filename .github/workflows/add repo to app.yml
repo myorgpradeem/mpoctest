@@ -16,13 +16,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # Set variables
-        APP_ID="48299343"
+        INSTALLATION_ID="48299343"
         REPO_NAME="api"
         API_URL="https://api.github.com"
 
-        # Add repository to app (replace this with the actual API request or script you need)
-        curl -X POST \
+        # Add repository to app installation
+        curl -X PUT \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
-          -H "Accept: application/vnd.github.v3+json" \
-          "$API_URL/apps/$APP_ID/add_repositories" \
-          -d "{\"repository_ids\": [\"$REPO_NAME\"]}"
+          -H "Accept: application/vnd.github.machine-man-preview+json" \
+          "$API_URL/app/installations/$INSTALLATION_ID/repositories/$REPO_NAME"
