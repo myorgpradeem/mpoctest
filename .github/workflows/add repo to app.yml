@@ -17,7 +17,7 @@ jobs:
       run: |
         # Set variables
         INSTALLATION_ID="48299343"
-        REPO_NAME="api"
+        REPO_NAME="767945234"
         API_URL="https://api.github.com"
 
         # Add repository to app installation
