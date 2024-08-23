@@ -1,6 +1,7 @@
 name: Add Repository to GitHub App
 
-#on:
+on:
+  workflow_dispatch:
 #  push:
 #    branches:
 #      - main
